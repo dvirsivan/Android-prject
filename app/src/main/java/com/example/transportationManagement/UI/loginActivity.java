@@ -30,20 +30,29 @@ public class loginActivity extends AppCompatActivity {
     private String password;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sharedPreferences = getSharedPreferences("USER",MODE_PRIVATE);
+        ((EditText)findViewById(R.id.email)).setText(sharedPreferences.getString("email",""));
+        ((EditText)findViewById(R.id.password)).setText(sharedPreferences.getString("password",""));
+
     }
 
     public void onLoginClick(View view) {
         email = ((EditText)findViewById(R.id.email)).getText().toString().trim();
         password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()){
-                Intent intent = new Intent(loginActivity.this,MainActivity.class);
-                startActivity(intent);
+            if (task.isSuccessful() ){
+                if (currentUser.isEmailVerified()) {
+                    Intent intent = new Intent(loginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(getBaseContext(),"Please verify the mail",Toast.LENGTH_LONG).show();
             }
             else
                 Toast.makeText(getBaseContext(),task.getException().getMessage(),Toast.LENGTH_LONG).show();
@@ -53,22 +62,18 @@ public class loginActivity extends AppCompatActivity {
     }
 
     public void onSignUpClick(View view) throws InterruptedException {
-       // final SharedPreferences sharedPreferences = getSharedPreferences("USER",MODE_PRIVATE);
         email = ((EditText)findViewById(R.id.email)).getText().toString().trim();
         password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
-        if (validFields() != "") {
+        if (validFields() == "") {
             Toast.makeText(getBaseContext(), "Please verify your mail", Toast.LENGTH_LONG).show();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
-                            // SharedPreferences.Editor editor = sharedPreferences.edit();
-                            // editor.putString("email", email);
-                            // editor.putString("password", password);
-                            // editor.commit();
                             currentUser = mAuth.getCurrentUser();
                             sendMail();
+                            shared();
                         } else {
-                            Toast.makeText(getBaseContext(), "Your mail is wrong/n task.getException().getMessage()",
+                            Toast.makeText(getBaseContext(), task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
                             Log.d("TAG", task.getException().getMessage());
                         }
@@ -76,6 +81,13 @@ public class loginActivity extends AppCompatActivity {
         }
         else
             Toast.makeText(getBaseContext(), validFields(), Toast.LENGTH_LONG);
+    }
+
+    private void shared() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("email", email);
+        editor.putString("password", password);
+        editor.commit();
     }
 
     private String validFields() {
@@ -94,8 +106,10 @@ public class loginActivity extends AppCompatActivity {
         currentUser.sendEmailVerification().addOnCompleteListener(this, task -> {
             if(task.isSuccessful()){
                 Toast.makeText(getBaseContext(),"Mail is sent to you, please verify the mail",Toast.LENGTH_LONG).show();
-                if (currentUser.isEmailVerified())
-                    Toast.makeText(getBaseContext(),"Excellent! You can login now",Toast.LENGTH_LONG).show();
+                if (currentUser.isEmailVerified()) {
+                    Toast.makeText(getBaseContext(), "Excellent! You can login now", Toast.LENGTH_LONG).show();
+                }
+
             }
             else {
                 Log.d("TAG", task.getException().getMessage());
