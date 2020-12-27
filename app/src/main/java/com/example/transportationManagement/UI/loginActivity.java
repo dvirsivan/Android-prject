@@ -65,7 +65,6 @@ public class loginActivity extends AppCompatActivity {
         email = ((EditText)findViewById(R.id.email)).getText().toString().trim();
         password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
         if (validFields() == "") {
-            Toast.makeText(getBaseContext(), "Please verify your mail", Toast.LENGTH_LONG).show();
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
@@ -75,7 +74,6 @@ public class loginActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(getBaseContext(), task.getException().getMessage(),
                                     Toast.LENGTH_LONG).show();
-                            Log.d("TAG", task.getException().getMessage());
                         }
                     });
         }
@@ -105,7 +103,7 @@ public class loginActivity extends AppCompatActivity {
     private void sendMail() {
         currentUser.sendEmailVerification().addOnCompleteListener(this, task -> {
             if(task.isSuccessful()){
-                Toast.makeText(getBaseContext(),"Mail is sent to you, please verify the mail",Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(),"Mail has sent to you, please verify your mail",Toast.LENGTH_LONG).show();
                 if (currentUser.isEmailVerified()) {
                     Toast.makeText(getBaseContext(), "Excellent! You can login now", Toast.LENGTH_LONG).show();
                 }

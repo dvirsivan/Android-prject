@@ -3,8 +3,12 @@ package com.example.transportationManagement.UI;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ListView;
 
+import com.example.transportationManagement.Entities.Travel;
+import com.example.transportationManagement.Model.RegisteredItem;
 import com.example.transportationManagement.R;
+import com.example.transportationManagement.adapter.RegisteredAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -17,6 +21,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.LinkedList;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -27,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        RegisteredItem[] re = new RegisteredItem[]{new RegisteredItem("asdf",new LinkedList<>(),"12-12-12",
+                Travel.RequestType.accepted,new LinkedList<>()) };
+        ListView registeredList = (ListView)findViewById(R.id.registeredList);
+        RegisteredAdapter adapter = new RegisteredAdapter(getBaseContext(), Arrays.asList(re));
+        registeredList.setAdapter(adapter);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

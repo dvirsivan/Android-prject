@@ -19,7 +19,6 @@ import java.util.Map;
 
 
 
-
 @Entity
 public class Travel {
 
