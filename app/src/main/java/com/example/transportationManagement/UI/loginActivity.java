@@ -45,13 +45,14 @@ public class loginActivity extends AppCompatActivity {
     public void onLoginClick(View view) {
         email = ((EditText)findViewById(R.id.email)).getText().toString().trim();
         password = ((EditText)findViewById(R.id.password)).getText().toString().trim();
+     //   currentUser = mAuth.getCurrentUser();
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful() ){
-                if (currentUser.isEmailVerified()) {
+                //if (currentUser.isEmailVerified()) {
                     Intent intent = new Intent(loginActivity.this, MainActivity.class);
                     startActivity(intent);
-                }
-                else
+                //}
+                //else
                     Toast.makeText(getBaseContext(),"Please verify the mail",Toast.LENGTH_LONG).show();
             }
             else

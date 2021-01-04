@@ -1,4 +1,4 @@
-package com.example.transportationManagement.UI.ui.home;
+package com.example.transportationManagement.UI.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,20 +16,20 @@ import com.example.transportationManagement.R;
 
 public class HomeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private com.example.transportationManagement.UI.ui.home.HomeViewModel homeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+                new ViewModelProvider(this).get(com.example.transportationManagement.UI.ui.home.HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_registered, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
+       /* final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 }

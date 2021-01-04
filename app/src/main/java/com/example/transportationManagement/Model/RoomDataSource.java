@@ -11,7 +11,7 @@ import androidx.room.TypeConverters;
 import com.example.transportationManagement.Entities.Travel;
 
 @Database(entities = {Travel.class}, version = 1, exportSchema = false)
-@TypeConverters({Travel.RequestType.class, Travel.DateConverter.class, Travel.DateConverter.class, Travel.UserLocationConverter.class, Travel.CompanyConverter.class})
+@TypeConverters({Travel.LinkListConverter.class ,Travel.RequestType.class, Travel.DateConverter.class, Travel.DateConverter.class, Travel.UserLocationConverter.class, Travel.CompanyConverter.class})
 public abstract class RoomDataSource extends RoomDatabase {
 
     public static final String DATABASE_NAME="Mydatabase";

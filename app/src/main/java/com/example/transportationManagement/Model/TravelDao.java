@@ -15,10 +15,11 @@ import java.util.List;
 @Dao
 public interface TravelDao {
 
-    @Query("select * from travels")
+
+    @Query("select * from travel")
     LiveData<List<Travel>> getAll();
 
-    @Query("select * from travels where travelId=:id")
+    @Query("select * from travel where travelId=:id")
     LiveData<Travel> get(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,7 +34,7 @@ public interface TravelDao {
     @Delete
     void delete(Travel... travels);
 
-    @Query("delete from travels")
+    @Query("delete from travel")
     void clear();
 
 }

@@ -2,6 +2,8 @@ package com.example.transportationManagement.Entities;
 
 import android.location.Location;
 
+import androidx.annotation.NonNull;
+
 public class UserLocation {
     private Double lat;
     private Double lon;
@@ -26,5 +28,11 @@ public class UserLocation {
         if (location==null)
             return null;
         return new UserLocation(location.getLatitude(),location.getLongitude());
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("" + getLat() + " " + getLon());
     }
 }
